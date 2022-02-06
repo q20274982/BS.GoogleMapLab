@@ -7,10 +7,10 @@ let ubikeData = []
 
 function initMap() {
   // The location of Uluru
-  const uluru = { lat: 23, lng: 121 }
+  const uluru = { lat: 25.041599, lng: 121.5340941 }
   // The map, centered at Uluru
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 4,
+    zoom: 10,
     center: uluru,
   });
 }

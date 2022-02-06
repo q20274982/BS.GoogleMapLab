@@ -5,9 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <style>
     #map {
-      height: 400px;
+      height: 800px;
       /* The height is 400 pixels */
       width: 100%;
       /* The width is the width of the web page */
@@ -20,6 +21,7 @@
   <div id="map"></div>
   
   <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+  <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAM52Gtx7S9R0nXBOZxSG4gr71FqKn7U4A&callback=initMap&libraries=&v=weekly" defer></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="./script.js"></script>

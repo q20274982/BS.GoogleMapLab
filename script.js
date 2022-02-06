@@ -7,7 +7,7 @@ let ubikeData = []
 
 function initMap() {
   // The location of Uluru
-  const uluru = { lat: -25.344, lng: 131.036 }
+  const uluru = { lat: 23, lng: 121 }
   // The map, centered at Uluru
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 4,
@@ -20,14 +20,26 @@ async function loadUbikeData() {
     const res = await axios({ url: 'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json' })
     ubikeData = res.data
     
+    const markerList = []
     ubikeData.forEach(({ lat, lng })=> {
       const latLng = new google.maps.LatLng(lat, lng)
 
-      new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: latLng,
-        map: map
+        map: map,
+        label: {
+          text: '\ue52f',
+          fontFamily: 'Material Icons',
+          color: '#ffffff',
+          fontSize: '18px'
+        }
+        // label: 'A'
       })
+      markerList.push(marker)
     })
+    
+    new markerClusterer.MarkerClusterer({ map, markers: markerList });
+    
   } catch(error) {
     console.error(error)
   }

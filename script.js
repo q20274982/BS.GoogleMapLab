@@ -29,12 +29,12 @@ async function loadUbikeData() {
       const marker = new google.maps.Marker({
         position: latLng,
         map: map,
-        label: {
-          text: '\ue52f',
-          fontFamily: 'Material Icons',
-          color: '#ffffff',
-          fontSize: '18px'
-        }
+        // label: {
+        //   text: '\ue52f',
+        //   fontFamily: 'Material Icons',
+        //   color: '#ffffff',
+        //   fontSize: '18px'
+        // }
       })
 
       marker.addListener('click', () => {
@@ -62,6 +62,26 @@ async function loadUbikeData() {
       p.innerText = `${el.sarea} ${el.ar}`
       small.innerText = `上一次更新日期: ${el.updateTime}`
 
+      a.addEventListener('click', () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              map.setCenter(pos);
+            },
+            () => {
+              handleLocationError();
+            }
+          );
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError();
+        }
+      })
+
       infoListGroup.append(cloneInfoCard)
     })
 
@@ -79,4 +99,8 @@ function toggleToListCard(marker) {
   setTimeout(() => {
     targetCard.classList.remove('active')
   }, 3000)
+}
+
+function handleLocationError () {
+  console.error('無法取得使用者地理資訊')
 }

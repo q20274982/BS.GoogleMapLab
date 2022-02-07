@@ -60,12 +60,12 @@ async function loadUbikeData() {
       const marker = new google.maps.Marker({
         position: latLng,
         map: map,
-        // label: {
-        //   text: '\ue52f',
-        //   fontFamily: 'Material Icons',
-        //   color: '#ffffff',
-        //   fontSize: '18px'
-        // }
+        label: {
+          text: '\ue52f',
+          fontFamily: 'Material Icons',
+          color: '#ffffff',
+          fontSize: '18px'
+        }
       })
 
       marker.addListener('click', () => {

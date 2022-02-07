@@ -73,7 +73,10 @@ async function loadUbikeData() {
 function toggleToListCard(marker) {
   const latlng = { lat: marker.position.lat(), lng: marker.position.lng() }
   const toggleData = ubikeData.find(x => x.lat == latlng.lat && x.lng == latlng.lng )
-
   window.location.hash = `#${toggleData.sno}`
-
+  const targetCard = document.getElementById(toggleData.sno)
+  targetCard.classList.add('active')
+  setTimeout(() => {
+    targetCard.classList.remove('active')
+  }, 3000)
 }

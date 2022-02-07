@@ -35,6 +35,7 @@ function initMap() {
             lng: position.coords.longitude,
           }
           map.setCenter(currentPos)
+          alert(`取得當前位置成功: 目前位置: 經度${currentPos.lng}, 緯度${currentPos.lat}`)
         },
         () => {
           handleLocationError()

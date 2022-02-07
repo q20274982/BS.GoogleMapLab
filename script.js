@@ -2,7 +2,7 @@ window.onload = () => {
   loadUbikeData()
 }
 
-let map, directionsService, directionsRenderer
+let map, directionsService, directionsRenderer, currentPos
 let ubikeData = []
 
 function initMap() {
@@ -30,11 +30,11 @@ function initMap() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const pos = {
+          currentPos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           }
-          map.setCenter(pos)
+          map.setCenter(currentPos)
         },
         () => {
           handleLocationError()
@@ -86,6 +86,7 @@ async function loadUbikeData() {
       const span = cloneInfoCard.querySelector('span')
       const p = cloneInfoCard.querySelector('p')
       const small = cloneInfoCard.querySelector('small')
+      const button = cloneInfoCard.querySelector('button')
 
       a.id = el.sno
       h5.innerText = (el.sna).split('_')[1]
@@ -95,6 +96,11 @@ async function loadUbikeData() {
 
       a.addEventListener('click', () => {
         map.setCenter({ lat: el.lat,lng: el.lng })
+      })
+
+      button.addEventListener('click', (event) => {
+        event.stopPropagation()
+        directionToTarget({ lat: el.lat,lng: el.lng })
       })
 
       infoListGroup.append(cloneInfoCard)
@@ -120,9 +126,9 @@ function handleLocationError () {
   console.error('無法取得使用者地理資訊')
 }
 
-function directionToTarget() {
-  const start = new google.maps.LatLng(25.0415942, 121.5340941)
-  const end = new google.maps.LatLng(25.04201, 121.54612)
+function directionToTarget(lat, lng) {
+  const start = new google.maps.LatLng(currentPos)
+  const end = new google.maps.LatLng(lat, lng)
   const request = {
     origin: start,
     destination: end,
@@ -131,7 +137,7 @@ function directionToTarget() {
   directionsService.route(request, function(result, status) {
     if (status == 'OK') {
       directionsRenderer.setDirections(result)
-      directionsRenderer.setPanel(document.getElementById('directionsPanel'))
+      directionsRenderer.setPanel(document.getElementById('routeCard'))
     }
   })
 }

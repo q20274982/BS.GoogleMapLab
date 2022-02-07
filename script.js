@@ -18,6 +18,32 @@ function initMap() {
   directionsRenderer = new google.maps.DirectionsRenderer()
 
   directionsRenderer.setMap(map)
+
+  infoWindow = new google.maps.InfoWindow()
+
+  const locationButton = document.createElement("button")
+  locationButton.textContent = '取得當前地址'
+  locationButton.classList.add("get-location-btn")
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton)
+
+  locationButton.addEventListener('click', () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          }
+          map.setCenter(pos)
+        },
+        () => {
+          handleLocationError()
+        }
+      )
+    } else {
+      handleLocationError()
+    }
+  })
 }
 
 async function loadUbikeData() {
@@ -50,7 +76,7 @@ async function loadUbikeData() {
       markerList.push(marker)
     })
     
-    new markerClusterer.MarkerClusterer({ map, markers: markerList });
+    new markerClusterer.MarkerClusterer({ map, markers: markerList })
 
     ubikeData.forEach(el => {
       const cloneInfoCard = infoCard.cloneNode(true).content
@@ -68,23 +94,7 @@ async function loadUbikeData() {
       small.innerText = `上一次更新日期: ${el.updateTime}`
 
       a.addEventListener('click', () => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              map.setCenter(pos);
-            },
-            () => {
-              handleLocationError();
-            }
-          );
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError();
-        }
+        map.setCenter({ lat: el.lat,lng: el.lng })
       })
 
       infoListGroup.append(cloneInfoCard)
@@ -117,11 +127,11 @@ function directionToTarget() {
     origin: start,
     destination: end,
     travelMode: 'WALKING'
-  };
+  }
   directionsService.route(request, function(result, status) {
     if (status == 'OK') {
-      directionsRenderer.setDirections(result);
-      directionsRenderer.setPanel(document.getElementById('directionsPanel'));
+      directionsRenderer.setDirections(result)
+      directionsRenderer.setPanel(document.getElementById('directionsPanel'))
     }
   })
 }

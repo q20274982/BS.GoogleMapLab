@@ -2,7 +2,7 @@ window.onload = () => {
   loadUbikeData()
 }
 
-let map
+let map, directionsService, directionsRenderer
 let ubikeData = []
 
 function initMap() {
@@ -12,7 +12,12 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 10,
     center: uluru,
-  });
+  })
+  
+  directionsService = new google.maps.DirectionsService()
+  directionsRenderer = new google.maps.DirectionsRenderer()
+
+  directionsRenderer.setMap(map)
 }
 
 async function loadUbikeData() {
@@ -103,4 +108,20 @@ function toggleToListCard(marker) {
 
 function handleLocationError () {
   console.error('無法取得使用者地理資訊')
+}
+
+function directionToTarget() {
+  var start = new google.maps.LatLng(25.0415942, 121.5340941)
+  var end = new google.maps.LatLng(25.04201, 121.54612)
+  var request = {
+    origin: start,
+    destination: end,
+    travelMode: 'DRIVING'
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == 'OK') {
+      directionsRenderer.setDirections(result);
+      directionsRenderer.setPanel(document.getElementById('directionsPanel'));
+    }
+  })
 }

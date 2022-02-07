@@ -111,12 +111,12 @@ function handleLocationError () {
 }
 
 function directionToTarget() {
-  var start = new google.maps.LatLng(25.0415942, 121.5340941)
-  var end = new google.maps.LatLng(25.04201, 121.54612)
-  var request = {
+  const start = new google.maps.LatLng(25.0415942, 121.5340941)
+  const end = new google.maps.LatLng(25.04201, 121.54612)
+  const request = {
     origin: start,
     destination: end,
-    travelMode: 'DRIVING'
+    travelMode: 'WALKING'
   };
   directionsService.route(request, function(result, status) {
     if (status == 'OK') {
